@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { Email, CheckGreen, AlertRed } from "@/components/icons/ready-to-use";
 import {
   Stack,
@@ -9,10 +10,10 @@ import {
   Input,
 } from "@chakra-ui/react";
 
-import React from "react";
 import { useForgotPasswordHelper } from "./ForgotPassword.helper";
+import Link from "next/link";
 
-export const ForgotPasswordForm = () => {
+export const ForgotPasswordForm: React.FC = () => {
   const {
     handleRecoverPassword,
     handleSubmit,
@@ -28,7 +29,7 @@ export const ForgotPasswordForm = () => {
 
   return (
     <div>
-      <form>
+      <form onSubmit={handleSubmit(handleRecoverPassword)}>
         <Stack className="mb-9">
           <InputGroup className="flex items-center">
             <InputLeftElement pointerEvents="none">
@@ -66,9 +67,12 @@ export const ForgotPasswordForm = () => {
         </Stack>
 
         <div className="flex items-center justify-between text-xs">
-          <button className="py-3 px-5 bg-lightPurple text-purple rounded-4xl">
+          <Link
+            className="py-3 px-5 bg-lightPurple text-purple rounded-4xl"
+            href="/login"
+          >
             Cancelar
-          </button>
+          </Link>
           <button className="py-3 px-5 bg-purple text-white rounded-4xl">
             Pedir password
           </button>

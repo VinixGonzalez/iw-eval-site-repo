@@ -22,9 +22,7 @@ export const useForgotPasswordHelper = () => {
     resolver: zodResolver(forgetPasswordSchema),
   });
 
-  const handleRecoverPassword = () => {
-    debugger;
-  };
+  const handleRecoverPassword = () => {};
 
   return {
     register,
