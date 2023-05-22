@@ -1,40 +1,17 @@
-import { useAtomValue } from "jotai";
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 const enum ErrorStatusEnum {
   Ok = "Ok",
   Erro = "Erro",
+  BadRequest = 400,
 }
-
-type ResponseErrorType = {
-  status: ErrorStatusEnum.Ok | ErrorStatusEnum.Erro;
-  result: null;
-  alerts: [
-    {
-      typeError: {
-        description: string;
-        statusCode: number;
-      };
-      message: string;
-    }
-  ];
-  errors: null;
-};
 
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       credentials: {},
       async authorize(credentials, req) {
-        // debugger;
-
-        // try {
-
-        // } catch (error) {
-        //   console.log(error);
-        // }
-
         const dataBody = JSON.stringify(credentials);
 
         const res = await fetch(
@@ -48,7 +25,7 @@ export const authOptions: NextAuthOptions = {
 
         console.log(res);
         // If no error and we have user data, return it
-        if (res && res.status === ErrorStatusEnum.Ok) {
+        if (res.result) {
           const userObj = {
             name: res.result.userToken.name,
             email: res.result.userToken.email,
@@ -60,7 +37,10 @@ export const authOptions: NextAuthOptions = {
           return userObj;
         }
 
-        if (res && res.status === ErrorStatusEnum.Erro) {
+        if (
+          res?.status === ErrorStatusEnum.Erro ||
+          res?.status === ErrorStatusEnum.BadRequest
+        ) {
           return res;
         }
 
@@ -89,7 +69,10 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     async signIn({ user, account, profile, email, credentials }) {
-      if (user.status === ErrorStatusEnum.Erro) {
+      if (
+        user?.status === ErrorStatusEnum.Erro ||
+        user?.status === ErrorStatusEnum.BadRequest
+      ) {
         return "/login/?error=wrong-credentials";
       }
 
@@ -104,5 +87,6 @@ export const authOptions: NextAuthOptions = {
     // signOut: "/logout",
     // newUser: '' // place to redirect the user at the first login
   },
+  secret: process.env.NEXTAUTH_SECRET,
   // debug: true,
 };
