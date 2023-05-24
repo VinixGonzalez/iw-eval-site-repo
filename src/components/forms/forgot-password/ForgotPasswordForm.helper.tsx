@@ -26,22 +26,21 @@ export const useForgotPasswordFormHelper = () => {
   });
 
   const handleRecoverPassword = async (form: any) => {
+    const urlDev = "https://localhost:7034/v1/identity/forgot-password";
+    const urlProd =
+      "https://iw-dev-eval-identity-webapp.azurewebsites.net/v1/identity/forgot-password";
     const dataBody = JSON.stringify(form);
-    const res = await fetch(
-      "https://iw-dev-eval-identity-webapp.azurewebsites.net/v1/identity/forgot-password",
-      {
-        method: "POST",
-        body: dataBody,
-        headers: { "Content-Type": "application/json" },
-      }
-    ).then((res) => res.json());
+    const res = await fetch(urlProd, {
+      method: "POST",
+      body: dataBody,
+      headers: { "Content-Type": "application/json" },
+    }).then((res) => res.json());
 
     if (res.result && res.status === "Ok") {
       // TODO: Trocar para enum
       router.push("/login/forgot-password/password-email-success");
     }
 
-    debugger;
     if (res.status === "Erro") {
       // TODO: Trocar para enum
       setError("email", { type: "value", message: res.alerts[0]?.message });
