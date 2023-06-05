@@ -65,7 +65,7 @@ export default function NewPasswordForgotForm({
                 dirtyFields.password && !errors.password
                   ? "border-green"
                   : "border-black"
-              } ${errors.password && "border-red-600"}`}
+              } ${errors.password && "border-red"}`}
               {...register("password")}
             />
             <InputRightElement
@@ -81,7 +81,7 @@ export default function NewPasswordForgotForm({
             </InputRightElement>
           </InputGroup>
           {errors.password && (
-            <span className="text-red-600">{errors.password.message}</span>
+            <span className="text-red">{errors.password.message}</span>
           )}
         </div>
         <div className="mb-7">
@@ -99,7 +99,7 @@ export default function NewPasswordForgotForm({
                 isValid
                   ? "border-green"
                   : "border-black"
-              } ${errors.confirmPassword && "border-red-600"}`}
+              } ${errors.confirmPassword && "border-red"}`}
               {...register("confirmPassword")}
             />
             <InputRightElement
@@ -117,13 +117,11 @@ export default function NewPasswordForgotForm({
             </InputRightElement>
           </InputGroup>
           {errors.confirmPassword && (
-            <span className="text-red-600">
-              {errors.confirmPassword.message}
-            </span>
+            <span className="text-red">{errors.confirmPassword.message}</span>
           )}
         </div>
 
-        <p className="text-red-600 text-xs">
+        <p className="text-red text-xs">
           A password tem de ter no mínimo 8 caracteres, 1 letra maiúscula, 1
           letra minúscula, 1 número e pelo menos 1 caracter especial
           (!”#$%&*-+/)

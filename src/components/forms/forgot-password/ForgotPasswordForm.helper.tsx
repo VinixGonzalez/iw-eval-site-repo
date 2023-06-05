@@ -1,3 +1,4 @@
+import { toastComponent } from "@/components/toast/Toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -44,14 +45,22 @@ export const useForgotPasswordFormHelper = () => {
         setIsLoading(false);
       });
 
-    if (res.result && res.status === "Ok") {
+    if (res.result && res.status === "200") {
       // TODO: Trocar para enum
       router.push("/login/forgot-password/password-email-success");
     }
 
-    if (res.status === "Erro") {
+    if (res.statusCode === "Erro" || res.statusCode === "400") {
       // TODO: Trocar para enum
-      setError("email", { type: "value", message: res.alerts[0]?.message });
+      setError("email", {
+        type: "value",
+      });
+
+      toastComponent({
+        msg: res.alerts[0]?.message.messageDescription,
+        type: "error",
+        align: "horizontal",
+      });
     }
   };
 
